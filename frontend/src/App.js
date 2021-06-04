@@ -8,9 +8,9 @@ const App = () => {
     <>
     <Header/>
     <main>
-    <Container>
+    
       <h1>Welcome To ProShop</h1>
-    </Container>
+    
       
     </main>
     <Footer/>
