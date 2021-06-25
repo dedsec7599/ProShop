@@ -1,0 +1,2 @@
+Quantity is not being shown in the cart. Not getting added when adding product from product page. State doesn't contain "qty" element while seeing the it through redux tool. [Frontend problem] 
+Login data not being displayed when sending request through postman. Invalid id and password error being displayed even if multiple profiles data is already present mongoDB database.[Backend problem]
