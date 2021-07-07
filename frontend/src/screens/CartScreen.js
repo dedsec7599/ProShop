@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+//When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, its "useSelector"
 import {
   Row,
   Col,
@@ -11,12 +12,12 @@ import {
   Card,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart,removeFromCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
 const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id;
+  // const productId = match.params.id;
 
-  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+  // const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
 
@@ -25,19 +26,20 @@ const CartScreen = ({ match, location, history }) => {
 
   console.log(cartItems);
 
-  useEffect(() => {
-    if (productId) {
-      dispatch(addToCart(productId, qty));
-    }
-  }, [dispatch, productId, qty]);
+ 
+  // useEffect(() => {
+  //   if (productId) {
+  //     dispatch(addToCart(productId, qty));
+  //   }
+  // }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
+    dispatch(removeFromCart(id));
   };
 
-  const checkoutHandler = ()=>{
-    history.push('/login?redirect=shipping')
-  }
+  const checkoutHandler = () => {
+    history.push("/login?redirect=shipping");
+  };
 
   return (
     <Row>

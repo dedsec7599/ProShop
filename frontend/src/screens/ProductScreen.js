@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+//When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, we use "useSelector"
 import {
   Row,
   Col,
@@ -14,6 +15,8 @@ import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { listProductDetails } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
+import { propTypes } from "react-bootstrap/esm/Image";
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
@@ -28,8 +31,13 @@ const ProductScreen = ({ history, match }) => {
   }, [dispatch, match]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    dispatch(addToCart(product._id, qty));
+    history.push("/cart");
   };
+
+  // const addToCartHandler = () => {
+  //   history.push(`/cart/${match.params.id}?qty=${qty}`);
+  // };
 
   return (
     <>
