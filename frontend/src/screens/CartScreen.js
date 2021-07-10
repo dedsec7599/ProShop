@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 //When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, its "useSelector"

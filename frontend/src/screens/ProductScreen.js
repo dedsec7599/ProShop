@@ -16,7 +16,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { listProductDetails } from "../actions/productActions";
 import { addToCart } from "../actions/cartActions";
-import { propTypes } from "react-bootstrap/esm/Image";
+
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
