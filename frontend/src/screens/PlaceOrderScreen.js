@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap"; 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -11,6 +11,12 @@ const PlaceOrderScreen = ({ history }) => {
 
   const cart = useSelector((state) => state.cart);
 
+  if (!cart.shippingAddress.address) {
+    history.push('/shipping')
+  } else if (!cart.paymentMethod) {
+    history.push('/payment')
+  }
+  
   //Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -30,7 +36,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/orders/${order._id}`);
+      history.push(`/order/${order._id}`);
     }
     // eslint-disable-next-line
   }, [history, success]);
