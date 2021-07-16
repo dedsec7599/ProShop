@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 //When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, its "useSelector"
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listUsers } from "../actions/userActions";
+import { listUsers, deleteUser } from "../actions/userActions";
 
-const UserListScreen = ({history}) => {
+const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const userList = useSelector((state) => state.userList);
@@ -16,17 +16,21 @@ const UserListScreen = ({history}) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
   useEffect(() => {
-      if(userInfo && userInfo.isAdmin){
-          dispatch(listUsers());
-      } else {
-          history.push("/login")
-      }
-    
-  }, [dispatch,history]);
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listUsers());
+    } else {
+      history.push("/login");
+    }
+  }, [dispatch, history, successDelete]);
 
   const deleteHandler = (id) => {
-    console.log("id");
+    if (window.confirm("Are you sure?")) {
+      dispatch(deleteUser(id));
+    }
   };
 
   return (
