@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../constants/orderConstants";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from "../constants/orderConstants";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id;
 
   const [sdkReady, setSdkReady] = useState(false);
@@ -21,6 +28,12 @@ const OrderScreen = ({ match }) => {
 
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading) {
     //Calculate prices
@@ -34,6 +47,10 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
@@ -44,19 +61,24 @@ const OrderScreen = ({ match }) => {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       addPayPalScript();
     } else {
       setSdkReady(true);
     }
-  }, [dispatch, orderId, successPay, order]);
+  }, [dispatch, orderId, successPay, successDeliver, order]);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -74,7 +96,8 @@ const OrderScreen = ({ match }) => {
               <p>
                 <strong>Name: </strong> {order.user.name}
               </p>
-              <p>E-mail:
+              <p>
+                E-mail:
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
@@ -168,18 +191,32 @@ const OrderScreen = ({ match }) => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid &&
-                (
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {!sdkReady ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    />
+                  )}
+                </ListGroup.Item>
+              )}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
                   <ListGroup.Item>
-                    {loadingPay && <Loader />}
-                    {!sdkReady ? (
-                      <Loader />
-                    ) : (
-                      <PayPalButton
-                        amount={order.totalPrice}
-                        onSuccess={successPaymentHandler}
-                      />
-                    )}
+                    <Button
+                      type="button"
+                      className="btn btn-block w-100"
+                      onClick={deliverHandler}
+                    >
+                      Mark as Delivered
+                    </Button>
                   </ListGroup.Item>
                 )}
             </ListGroup>
