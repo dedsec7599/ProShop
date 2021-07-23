@@ -1,10 +1,12 @@
 import React from "react";
+import {Route} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 //When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, its "useSelector"
 import { LinkContainer } from "react-router-bootstrap";
 //LinkContainer is used in bootstrap components for routing while Link is used for non-bootstrap components
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,7 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+          <Route render={({history})=><SearchBox history={history} />} />
             <Nav className="ms-auto ">
               <LinkContainer to="/cart">
                 <Nav.Link>
