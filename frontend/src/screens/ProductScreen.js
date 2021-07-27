@@ -36,8 +36,11 @@ const ProductScreen = ({ history, match }) => {
   const { userInfo } = userLogin;
 
   const productReviewCreate = useSelector((state) => state.productReviewCreate);
-  const { success: successProductReview, error: errorProductReview } =
-    productReviewCreate;
+  const {
+    success: successProductReview,
+    loading: loadingProductReview,
+    error: errorProductReview,
+  } = productReviewCreate;
 
   useEffect(() => {
     if (successProductReview) {
@@ -56,10 +59,12 @@ const ProductScreen = ({ history, match }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProductReview(match.params.id, {
-      rating,
-      comment,
-    }));
+    dispatch(
+      createProductReview(match.params.id, {
+        rating,
+        comment,
+      })
+    );
   };
 
   // const addToCartHandler = () => {
@@ -77,7 +82,7 @@ const ProductScreen = ({ history, match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-        <Meta title={product.name}  />
+          <Meta title={product.name} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
@@ -169,6 +174,12 @@ const ProductScreen = ({ history, match }) => {
                 ))}
                 <ListGroup.Item>
                   <h2>Write a Customer Review</h2>
+                  {successProductReview && (
+                    <Message variant="success">
+                      Review submitted successfully
+                    </Message>
+                  )}
+                  {loadingProductReview && <Loader />}
                   {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>
                   )}
@@ -198,7 +209,11 @@ const ProductScreen = ({ history, match }) => {
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
-                      <Button type="submit" variant="primary">
+                      <Button
+                        disabled={loadingProductReview}
+                        type="submit"
+                        variant="primary"
+                      >
                         Submit
                       </Button>
                     </Form>

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 //When we need to call an action, we use "useDispatch" and if you want to bring something from redux state, its "useSelector"
 import { Row, Col } from "react-bootstrap";
@@ -32,7 +31,7 @@ const HomeScreen = ({ match }) => {
       {!keyword ? (
         <ProductCarousel />
       ) : (
-        <Link to="/" className="btn btn-primary">
+        <Link to='/' className='btn btn-light'>
           Go Back
         </Link>
       )}
@@ -40,12 +39,12 @@ const HomeScreen = ({ match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant='danger'>{error}</Message>
       ) : (
         <>
           <Row>
             {products.map((product) => (
-              <Col sm={12} md={6} lg={4} xl={3}>
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
             ))}
@@ -53,12 +52,12 @@ const HomeScreen = ({ match }) => {
           <Paginate
             pages={pages}
             page={page}
-            keyword={keyword ? keyword : ""}
+            keyword={keyword ? keyword : ''}
           />
         </>
       )}
     </>
-  );
-};
+  )
+}
 
 export default HomeScreen;
