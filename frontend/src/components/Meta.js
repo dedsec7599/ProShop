@@ -12,9 +12,9 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.defaultProps = {
-  title: "Welcome To ProShop",
-  description: "Buy products at cheapest prices",
-  keyword: "electronics, buy electronics, cheap electronics",
+  title: "Welcome Fellow Reader",
+  description: "All your favorite books in one place",
+  keyword: "books,book,pages,bookshelf",
 };
 
 export default Meta;
