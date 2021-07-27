@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dedsec7599/Pick-a-Book.git"
+    "url": "git+https://github.com/dedsec7599/ProShop.git"
   },
   "author": "Harsh Vardhan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dedsec7599/Pick-a-Book/issues"
+    "url": "https://github.com/dedsec7599/ProShop/issues"
   },
-  "homepage": "https://github.com/dedsec7599/Pick-a-Book#readme",
+  "homepage": "https://github.com/dedsec7599/ProShop#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
