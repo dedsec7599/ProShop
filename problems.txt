@@ -2,4 +2,4 @@
 [SOLVED]Login data not being displayed when sending request through postman. Invalid id and password error being displayed even if multiple profiles data is already present mongoDB database.[Backend problem] [CORRECTION: text was selected in body/raw in postman instead of json]
 [SOLVED] Getting error after running "npm run data:destroy" command. Data gets deleted but it gives an error in the console.[Backend problem]  [CORRECTION: process.exit(1) =>  process.exit()]
 
-Hello
+User ratings not being shown properly for particular product page 
